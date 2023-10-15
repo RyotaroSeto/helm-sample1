@@ -1,5 +1,10 @@
 # helm-sample1
 
+- helm install full-coral ./mychart
+- helm uninstall full-coral
+- helm get manifest full-coral
+- helm install geared-marsupi ./mychart --dry-run --debug
+
 ## helm についての基本
 
 - 「nginx がほしい」と願えば上記の YAML を生成してくれる
@@ -71,3 +76,7 @@ Kubernetes クラスターがサポートする機能に関する情報を提供
 | kubectl get pods --all-namespaces    | lookup "v1" "Pod" "" ""                  |
 | kubectl get namespace mynamespace    | lookup "v1" "Namespace" "" "mynamespace" |
 | kubectl get namespaces               | lookup "v1" "Namespace" "" ""            |
+
+### Notes.txt ファイルの作成
+
+- インストールに関するメモをチャートに追加するには、templates/NOTES.txt ファイルを作成するだけ

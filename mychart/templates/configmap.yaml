@@ -20,3 +20,44 @@ data:
 {{ range $index, $service := (lookup "v1" "Service" "mynamespace" "").items }}
     {{/* do something with each service */}}
 {{ end }}
+{{ if eq .Values.favorite.drink "tee" }}
+  mug: "true"
+{{ end }}
+
+{{- with .Values.favorite }}
+  drink: {{ .drink | default "tea" | quote }}
+  food: {{ .food | upper | quote }}
+{{- end }}
+  toppings: |-
+    - "Mushrooms"
+    - "Cheese"
+    - "Peppers"
+    - "Onions"
+
+  sizes: |-
+    {{- range tuple "small" "medium" "large" }}
+    - {{ . }}
+    {{- end }}
+
+  {{- $files := .Files }}
+  {{- range tuple "config1.toml" "config2.toml" "config3.toml" }}
+  {{ . }}: |-
+        {{ $files.Get . }}
+  {{- end }}
+
+  {{ $currentScope := .}}
+  {{ range $path, $_ :=  .Files.Glob  "**.yaml" }}
+      {{- with $currentScope}}
+          {{ .Files.Get $path }}
+      {{- end }}
+  {{ end }}
+
+  {{ range $path, $_ :=  .Files.Glob  "**.yaml" }}
+        {{ $.Files.Get $path }}
+  {{ end }}
+
+  token: |-
+        {{ .Files.Get "config1.toml" | b64enc }}
+
+  some-file.txt: {{ range .Files.Lines "foo/bar.txt" }}
+    {{ . }}{{ end }}
