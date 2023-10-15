@@ -105,3 +105,35 @@ Kubernetes クラスターがサポートする機能に関する情報を提供
 - helm template --debug チャート テンプレートのレンダリングをローカルでテスト
 - helm install --dry-run --debug サーバーにテンプレートをレンダリングさせ、結果のマニフェスト ファイルを返す
 - helm get manifest: サーバーにどのようなテンプレートがインストールされているかを確認する良い方法
+
+### チャート管理
+
+```
+helm create <name>                      # チャートで使用される一般的なファイルやディレクトリとともにチャート・ディレクトリを作成
+helm package <chart-path>               # チャートをバージョン管理されたチャート・アーカイブ・ファイルにパッケージする
+helm lint <chart>                       # チャートを検査し、可能性のある問題を特定するためにテストを実行
+helm show all <chart>                   # チャートを点検し、その内容を列挙
+helm show values <chart>                # values.yamlファイルの内容を表示
+helm pull <chart>                       # ダウンロード／プルチャート
+helm pull <chart> --untar=true          # trueに設定すると、チャートをダウンロードした後にuntarする。
+helm pull <chart> --verify              # 使用前にパッケージを確認する
+helm pull <chart> --version <number>    # Default-latestを使用する場合、使用するチャート・バージョンの制約を指定する。
+helm dependency list <chart>            # チャートの依存関係のリストを表示する
+```
+
+### アプリのインストールとアンインストール
+
+```
+helm install <name> <chart>                           # 名前を指定してチャートをインストールする。
+helm install <name> <chart> --namespace <namespace>   # 特定の名前空間にチャートをインストールする。
+helm install <name> <chart> --set key1=val1,key2=val2 # コマンドラインで値を設定 (カンマで区切って複数指定可能)
+helm install <name> <chart> --values <yaml-file/url>  # 指定した値でチャートをインストールする。
+helm install <name> <chart> --dry-run --debug         # チャートを検証するためにテストインストールを実行する (p)
+helm install <name> <chart> --verify                  # パッケージを使う前に検証する
+helm install <name> <chart> --dependency-update       # チャートをインストールする前に依存関係がなければ更新する。
+helm uninstall <name>                                 # リリースをアンインストールする
+```
+
+### その他コマンド
+
+https://helm.sh/docs/intro/cheatsheet/
