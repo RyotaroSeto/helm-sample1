@@ -30,3 +30,44 @@ name:をリソースにハードコーディングすることは、通常、悪
 
 - `{{ .Release.Name }}-configmap`を使う
   - `{{ .Release.Name }}`はリリース名が入る
+
+## 組み込みオブジェクト
+
+### Release
+
+- Release.Name：リリース名
+- Release.Namespace: リリースされる名前空間 (マニフェストがオーバーライドしない場合)
+- Release.IsUpgradetrue:現在の操作がアップグレードまたはロールバックの場合に設定されます
+- Release.IsInstalltrue:現在の操作がインストールの場合、これは に設定されます。
+- Release.Revision: このリリースのリビジョン番号。インストール時は 1 で、アップグレードとロールバックのたびに増加します。
+- Release.Service: 現在のテンプレートをレンダリングしているサービス
+
+### Values
+
+- values.yaml:ファイルおよびユーザー指定のファイルからテンプレートに渡される値。デフォルトでは Values 空です。
+
+### Chart
+
+- ファイルの内容 Chart.yaml。内のすべてのデータ Chart.yaml にここからアクセスできます。たとえば{{ .Chart.Name }}-{{ .Chart.Version }}、 を出力します mychart-0.1.0
+
+### Files
+
+これにより、チャート内のすべての非特殊ファイルへのアクセスが提供されます
+
+### Capabilities
+
+Kubernetes クラスターがサポートする機能に関する情報を提供
+
+### Template
+
+実行中の現在のテンプレートに関する情報
+
+### lookup 機能の使用
+
+| kubectl                              | ルックアップ関数                         |
+| ------------------------------------ | ---------------------------------------- |
+| kubectl get pod mypod -n mynamespace | lookup "v1" "Pod" "mynamespace" "mypod"  |
+| kubectl get pods -n mynamespace      | lookup "v1" "Pod" "mynamespace" ""       |
+| kubectl get pods --all-namespaces    | lookup "v1" "Pod" "" ""                  |
+| kubectl get namespace mynamespace    | lookup "v1" "Namespace" "" "mynamespace" |
+| kubectl get namespaces               | lookup "v1" "Namespace" "" ""            |

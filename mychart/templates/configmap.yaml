@@ -4,3 +4,19 @@ metadata:
   name: {{ .Release.Name }}-configmap
 data:
   myvalue: 'Hello World'
+  drink: {{ .Values.favoriteDrink }} # drink: coffee
+  drink: {{ .Values.favorite.drink }} # drink: tee
+  food: {{ .Values.favorite.food }} # food: pizza
+  drink: {{ quote .Values.favorite.drink }} # drink: "tee"
+  food: {{ quote .Values.favorite.food }} # food: "pizza"
+  drink: {{ .Values.favorite.drink | quote }} # drink: "tee"
+  food: {{ .Values.favorite.food | quote }} # food: "pizza"
+  food: {{ .Values.favorite.food | upper | quote }} # food: "PIZZA"
+# パイプライン(quote)を使用すると、いくつかの関数を連鎖させることができます。
+  drink: {{ .Values.favorite.drink | repeat 5 | quote }} #  drink: "teeteeteeteetee"
+# repeat関数は指定された文字列を指定された回数エコーする
+  drink: {{ .Values.favorite.drinkdefault | default "test" | quote }} # drink: "test"
+# 値が省略された場合にdefaultを使えば、テンプレート内でデフォルト値を指定
+{{ range $index, $service := (lookup "v1" "Service" "mynamespace" "").items }}
+    {{/* do something with each service */}}
+{{ end }}
