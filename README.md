@@ -4,6 +4,11 @@
 - helm uninstall full-coral
 - helm get manifest full-coral
 - helm install geared-marsupi ./mychart --dry-run --debug
+- subchart
+  - cd mychart/charts
+  - helm create mysubchart
+  - rm -rf mysubchart/templates/\*
+  - helm install --generate-name --dry-run --debug mychart/charts/mysubchart
 
 ## helm についての基本
 
@@ -80,3 +85,9 @@ Kubernetes クラスターがサポートする機能に関する情報を提供
 ### Notes.txt ファイルの作成
 
 - インストールに関するメモをチャートに追加するには、templates/NOTES.txt ファイルを作成するだけ
+
+### サブチャート
+
+- サブチャートは親の値にアクセスできない
+- 親チャートはサブチャートの値をオーバーライドできる
+- Helm は全てのチャートからアクセスできるグローバル値の概念がある
